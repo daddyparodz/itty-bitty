@@ -11,8 +11,19 @@ For more info: [wiki.bitty.site](https://github.com/alcor/itty-bitty/wiki/)
 ## Self-hosting
 
 ### Local runtime prerequisites
-- Node.js 20 or newer
+- Node.js 20.9 or newer (Node.js 22 recommended)
 - npm 9 or newer
+
+### Netlify functions
+The rasterization handler in `functions/rasterize.js` uses Node.js 22 and its own
+locked `sharp` dependency. Netlify installs that package before building the site;
+`NODE_VERSION` in `netlify.toml` selects the build and default function runtime.
+A site-level `AWS_LAMBDA_JS_RUNTIME` override must also select a supported runtime
+when deploying. Firebase configuration in this repository is for hosting; there
+is no Firebase Functions entry point.
+
+Run `npm run test:functions` on Node.js 22 or 24 to install the function in an
+isolated directory and exercise its native encoders and rasterization response.
 
 ### Run locally
 1. Install dependencies with `npm install`.
