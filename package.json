@@ -12,7 +12,7 @@
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "morgan": "^1.10.0",
-    "sharp": "^0.31.3"
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "netlify-cli": "^11.5.1",
