@@ -1,4 +1,12 @@
+[build]
+  command = "npm --prefix functions ci && npm run build"
+  publish = "docs"
+
+[build.environment]
+  NODE_VERSION = "22"
+
 [functions]
+  node_bundler = "esbuild"
   external_node_modules = [
     "sharp"
   ]

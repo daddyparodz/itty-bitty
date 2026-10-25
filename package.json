@@ -2,10 +2,14 @@
   "name": "itty-bitty",
   "version": "0.0.0",
   "private": true,
+  "engines": {
+    "node": ">=20.9.0"
+  },
   "scripts": {
     "start": "node server/index.js",
     "dev": "NODE_ENV=development node server/index.js",
-    "build": "node build-v2.js"
+    "build": "node build-v2.js",
+    "test:functions": "node --test test/functions.test.js"
   },
   "dependencies": {
     "brotli-wasm": "^1.1.0",
