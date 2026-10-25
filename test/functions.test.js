@@ -3,7 +3,7 @@ const { test } = require('node:test');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { createRequire } = require('node:module');
+const { parse } = require('smol-toml');
 const { spawnSync } = require('node:child_process');
 const root = path.resolve(__dirname, '..');
 
@@ -31,14 +31,14 @@ test('functions installs, bundles and rasterizes independently of root dependenc
   assert.equal(probe.status, 0, probe.stderr || probe.error?.message);
   assert.match(probe.stdout, /FUNCTIONS_PASS/);
   t.diagnostic(probe.stdout.split('\n').find(line => line.startsWith('FUNCTIONS_PASS')));
-  const cliRequire = createRequire(require.resolve('netlify-cli/package.json'));
-  const config = cliRequire('toml').parse(fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8'));
+  const { zipFunctions } = await import('@netlify/zip-it-and-ship-it');
+  const config = parse(fs.readFileSync(path.join(root, 'netlify.toml'), 'utf8'));
   assert.equal(config.build.environment.NODE_VERSION, '22');
   assert.equal(config.functions.node_bundler, 'esbuild');
   assert.deepEqual(config.functions.external_node_modules, ['sharp']);
   const output = dir + '-bundle';
   t.after(() => fs.rmSync(output, { recursive: true, force: true }));
-  const results = await cliRequire('@netlify/zip-it-and-ship-it').zipFunctions(dir, output, {
+  const results = await zipFunctions(dir, output, {
     archiveFormat: 'none', basePath: dir,
     config: { '*': {
       nodeBundler: config.functions.node_bundler,
@@ -48,6 +48,7 @@ test('functions installs, bundles and rasterizes independently of root dependenc
   });
   assert.equal(results.length, 1);
   assert.equal(results[0].name, 'rasterize');
+  assert.equal(results[0].bundler, 'esbuild');
   const bundle = results[0].path;
   const packages = fs.readdirSync(bundle, { recursive: true }).filter(file =>
     file.split(path.sep).join('/').endsWith('node_modules/sharp/package.json'));

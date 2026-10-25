@@ -11,7 +11,7 @@ For more info: [wiki.bitty.site](https://github.com/alcor/itty-bitty/wiki/)
 ## Self-hosting
 
 ### Local runtime prerequisites
-- Node.js 20.9 or newer (Node.js 22 recommended)
+- Node.js 22.13.0 or newer
 - npm 9 or newer
 
 ### Netlify functions
@@ -46,3 +46,18 @@ Optional environment variables:
 docker compose up --build -d
 ```
 Stop the stack with `docker compose down` when you are done.
+
+### Local development and validation
+
+Node.js 22.13.0 or newer is required (including the tooling's transitive engine
+requirements). The application image uses Node.js 22;
+the functions deployment runtime remains Node.js 22.
+
+Install with `npm ci`, run `npm test` and `npm run test:functions`, then
+`npm run build`. Function bundling uses the official
+`@netlify/zip-it-and-ship-it` package directly rather than installing the
+Netlify CLI. TOML validation uses `smol-toml`. No local dependency patches,
+postinstall hooks, or dependency overrides are needed.
+
+The optional Netlify editor extension uses its separately installed CLI; it is
+not part of the application's dependency tree.
