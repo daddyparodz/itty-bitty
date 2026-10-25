@@ -17,11 +17,11 @@ function embedInlines(src, dest) {
     fs.writeFileSync(dest,data)
   } catch (err) {
     console.error(err);
+    process.exitCode = 1;
   }
 }
 
 process.chdir("docs");
 embedInlines('index.html', 'index.min.html')
 
-process.chdir("render");
-embedInlines('recipe.html', 'recipe.min.html')
+embedInlines('render/recipe.html', 'render/recipe.min.html')
