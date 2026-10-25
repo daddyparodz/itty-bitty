@@ -1,8 +1,8 @@
-FROM node:20-bookworm-slim AS base
+FROM node:22-bookworm-slim AS base
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install --omit=dev
+RUN npm ci --omit=dev
 
 COPY docs ./docs
 COPY server ./server

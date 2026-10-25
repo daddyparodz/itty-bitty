@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "private": true,
   "engines": {
-    "node": ">=20.9.0"
+    "node": ">=22.13.0"
   },
   "scripts": {
     "start": "node server/index.js",
     "dev": "NODE_ENV=development node server/index.js",
     "build": "node build-v2.js",
-    "test:functions": "node --test test/functions.test.js"
+    "test:functions": "node --test test/functions.test.js",
+    "test": "node --test test/build.test.js test/images.test.js test/tooling.test.js test/upstream-consumer.test.js"
   },
   "dependencies": {
     "brotli-wasm": "^1.1.0",
@@ -19,8 +20,11 @@
     "sharp": "0.35.5"
   },
   "devDependencies": {
-    "netlify-cli": "^11.5.1",
+    "@netlify/zip-it-and-ship-it": "16.5.1",
+    "@types/node": "22.19.0",
+    "smol-toml": "1.9.1",
     "terser": "^5.44.0",
+    "typescript": "5.9.3",
     "uglifycss": "^0.0.29"
   }
 }

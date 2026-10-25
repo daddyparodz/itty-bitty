@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: ['20', '22', '24']
+        node: ['22', '24']
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -24,11 +24,10 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --engine-strict --no-audit --no-fund
       - name: Validate images and build regressions
-        run: node --test test/build.test.js test/images.test.js
+        run: npm test
       - name: Validate isolated functions package
-        if: matrix.node != '20'
         run: npm run test:functions
       - name: Build assets
         run: npm run build
